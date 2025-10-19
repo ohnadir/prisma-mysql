@@ -1,12 +1,12 @@
-import { Role } from "@prisma/client";
 import Prisma from "../config/prisma";
 import config from "../config";
-import { hashPassword } from "../util/hashpassword";
+import { hashPassword } from "../util/hashPassword";
+import { ROLES } from "../enum/user";
 
 
-const superUser =  {
+const superUser = {
     name: config.admin.name,
-    role: Role.SUPER_ADMIN,
+    role: ROLES.SUPER_ADMIN,
     email: config.admin.email,
     password: config.admin.password!,
 };
@@ -17,17 +17,17 @@ const seedSuperAdmin = async () => {
 
     const isExistAdmin = await Prisma.user.findFirst({
         where: {
-            role: Role.SUPER_ADMIN
+            role: ROLES.SUPER_ADMIN
         }
     });
 
-    if (isExistAdmin) {
-        console.log('Super admin already exists!');
-    }else{
+    if (!isExistAdmin) {
         await Prisma.user.create({
-            data: superUser 
+            data: superUser
         });
         console.log('Super admin created successfully!');
+    }else{
+        console.log('Super Admin Exist!');
     }
 };
 

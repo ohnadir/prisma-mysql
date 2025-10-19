@@ -7,18 +7,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
+enum Roles {
   USER
   ADMIN
   SUPER_ADMIN
 }
 
+model FcmToken {
+  id     Int    @id @default(autoincrement())
+  token  String
+  userId Int
+  user   User   @relation(fields: [userId], references: [id])
+}
+
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  role      Role     @default(USER)
+  id             Int        @id @default(autoincrement())
+  name           String
+  role           Roles
+  email          String    @unique
+  contact        String?
+  password       String
+  location       String?
+  profile        String?    @default("https://res.cloudinary.com/dzo4husae/image/upload/v1733459922/zfyfbvwgfgshmahyvfyk.png")
+  verified       Boolean    @default(false)
+  fcmToken       FcmToken[]
+  authentication Json?
+
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
 }
