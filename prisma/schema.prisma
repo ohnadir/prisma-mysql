@@ -15,24 +15,26 @@ enum Roles {
 
 model FcmToken {
   id     Int    @id @default(autoincrement())
-  token  String
+  token  String @unique
   userId Int
   user   User   @relation(fields: [userId], references: [id])
 }
 
 model User {
-  id             Int        @id @default(autoincrement())
+  id             Int     @id @default(autoincrement())
   name           String
   role           Roles
-  email          String    @unique
+  email          String  @unique
   contact        String?
   password       String
   location       String?
-  profile        String?    @default("https://res.cloudinary.com/dzo4husae/image/upload/v1733459922/zfyfbvwgfgshmahyvfyk.png")
-  verified       Boolean    @default(false)
-  fcmToken       FcmToken[]
+  profile        String? @default("https://res.cloudinary.com/dzo4husae/image/upload/v1733459922/zfyfbvwgfgshmahyvfyk.png")
+  verified       Boolean @default(false)
   authentication Json?
 
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
+  // Add these opposite relation fields
+  fcmTokens FcmToken[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

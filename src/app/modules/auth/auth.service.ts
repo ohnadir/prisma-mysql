@@ -28,7 +28,7 @@ const loginUserFromDB = async (payload: ILoginData) => {
     if (!isExistUser) {
         throw new ApiError(StatusCodes.BAD_REQUEST, "User doesn't exist!");
     }
-
+ 
      //check match password
     if ( password && !(await matchedPassword(password, isExistUser.password))) {
         throw new ApiError(StatusCodes.BAD_REQUEST, 'Password is incorrect!');
