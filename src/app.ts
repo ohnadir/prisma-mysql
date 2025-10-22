@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express'
-import router from './app/routes';
-import globalErrorHandler from './app/middlewares/globalErrorHandler';
+import globalErrorHandler from './middlewares/globalErrorHandler';
+import router from './routes';
 const app = express()
 
 app.use(express.json());
