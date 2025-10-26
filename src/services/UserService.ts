@@ -1,7 +1,7 @@
 import { UserRepository } from "../repositories/UserRepository";
-import { IUser } from "../types/user.types";
 import { StatusCodes } from "http-status-codes";
 import ApiError from "../utils/ApiError";
+import { Prisma } from "@prisma/client";
 
 export class UserService {
     private userRepository: UserRepository;
@@ -11,7 +11,7 @@ export class UserService {
     }
 
     // Create a new user
-    async createUser(data: IUser) {
+    async createUser(data: Prisma.UserCreateInput) {
         // Example: check if user already exists
         const existingUser = await this.userRepository.findByEmail(data.email);
         if (existingUser) {
@@ -33,7 +33,7 @@ export class UserService {
     }
 
     // Update user
-    async updateUser(id: string, data: Omit<IUser, "id">) {
+    async updateUser(id: string, data: Prisma.UserUpdateInput) {
         const updatedUser = await this.userRepository.update(id, data);
         return updatedUser;
     }

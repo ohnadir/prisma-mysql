@@ -1,0 +1,30 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 1
+    },
+    "auditLog": "C:\\Users\\Nadir Hossain\\Sparktech\\Template\\prisma-mysql-backend\\winston\\success\\.d5bc1997b45b2ac439b702c31abceb6f853bdd78-audit.json",
+    "files": [
+        {
+            "date": 1761469436107,
+            "name": "C:\\Users\\Nadir Hossain\\Sparktech\\Template\\prisma-mysql-backend\\winston\\success\\26-10-2025-15-success.log",
+            "hash": "f500f6491ee9d427f375989991a0e8eb8296f77819df0e6aefcdc2c0955772ac"
+        },
+        {
+            "date": 1761475319889,
+            "name": "C:\\Users\\Nadir Hossain\\Sparktech\\Template\\prisma-mysql-backend\\winston\\success\\26-10-2025-16-success.log",
+            "hash": "49a497cd4c0bb21fb4a343fb63a293af1d3007dab29f8a3cea50d1577cbe3917"
+        },
+        {
+            "date": 1761476561103,
+            "name": "C:\\Users\\Nadir Hossain\\Sparktech\\Template\\prisma-mysql-backend\\winston\\success\\26-10-2025-17-success.log",
+            "hash": "b23dde9d14f777cdae267849c5e0693349881510bd3e85a887cad092b2062c88"
+        },
+        {
+            "date": 1761482326663,
+            "name": "C:\\Users\\Nadir Hossain\\Sparktech\\Template\\prisma-mysql-backend\\winston\\success\\26-10-2025-18-success.log",
+            "hash": "0decc15e4f48a5aaeca21a82c7da8f748b106fe34adedc34aecf74bae9390123"
+        }
+    ],
+    "hashType": "sha256"
+}

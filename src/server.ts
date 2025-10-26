@@ -1,9 +1,9 @@
 import { Server } from "socket.io";
 import app from "./app";
-import seedSuperAdmin from "./seed/superAdmin";
 import Prisma from "./config/prisma";
 import colors from 'colors';
 import config from "./config";
+import seedSuperAdmin from "./seed/superAdmin";
 
 
 // Catch uncaught exceptions (synchronous errors not caught anywhere else)
@@ -19,10 +19,15 @@ let server: any;
 async function main() {
     try {
 
-        await Prisma.$connect();
-        console.log(colors.green('🚀 Database connected successfully'));
+        await Prisma.$connect().then(() =>{
+            console.log(colors.green('🚀 Database connected successfully'));
+            seedSuperAdmin();
+        })
+        .catch((error) => {
+            console.error(colors.red(`❌ Database connection error: ${error?.message}`));
+            process.exit(1);
+        });
 
-        seedSuperAdmin();
 
         server = app.listen(Number(config.port), config.ip_address as string, () => {
             console.log(colors.yellow(`♻️  Application listening on this api: http://${config.ip_address}:${config.port}`));

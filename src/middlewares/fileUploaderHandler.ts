@@ -3,7 +3,7 @@ import fs from 'fs';
 import { StatusCodes } from 'http-status-codes';
 import multer, { FileFilterCallback } from 'multer';
 import path from 'path';
-import ApiError from '../../errors/ApiErrors';
+import ApiError from '../utils/ApiError';
 
 const uploadDirectories: Record<string, string> = {
     image: 'image',

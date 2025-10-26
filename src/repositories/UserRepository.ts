@@ -1,4 +1,4 @@
-import { PrismaClient, User } from "@prisma/client";
+import { PrismaClient, User, Prisma } from "@prisma/client";
 import { IUser } from "../types/user.types";
 
 export class UserRepository {
@@ -8,7 +8,7 @@ export class UserRepository {
         this.prisma = new PrismaClient();
     }
 
-    async create(data: Omit<IUser, "id">): Promise<User> {
+    async create(data: Prisma.UserCreateInput): Promise<User> {
         return this.prisma.user.create({ data });
     }
 
@@ -20,7 +20,7 @@ export class UserRepository {
         return this.prisma.user.findUnique({ where: { email } });
     }
 
-    async update(id: string, data: Omit<IUser, "id">): Promise<User> {
+    async update(id: string, data: Prisma.UserUpdateInput): Promise<User> {
         return this.prisma.user.update({
             where: { id: Number(id) },
             data,

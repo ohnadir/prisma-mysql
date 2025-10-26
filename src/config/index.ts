@@ -29,5 +29,6 @@ export default{
         email:process.env.ADMIN_EMAIL!,
         password: process.env.ADMIN_PASSWORD,
         name: process.env.ADMIN_NAME || 'Super Admin',
-    }
+    },
+    img_url: process.env.IMG_URL
 }
