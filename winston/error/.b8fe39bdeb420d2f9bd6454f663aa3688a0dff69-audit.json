@@ -6,24 +6,9 @@
     "auditLog": "C:\\Users\\Nadir Hossain\\Sparktech\\Template\\prisma-mysql-backend\\winston\\error\\.b8fe39bdeb420d2f9bd6454f663aa3688a0dff69-audit.json",
     "files": [
         {
-            "date": 1761469436110,
-            "name": "C:\\Users\\Nadir Hossain\\Sparktech\\Template\\prisma-mysql-backend\\winston\\error\\26-10-2025-15-error.log",
-            "hash": "7f4a901e72dc3beb6328041c08a141bff7373155b1588f6d3f1fe1f38d0a01c8"
-        },
-        {
-            "date": 1761475319892,
-            "name": "C:\\Users\\Nadir Hossain\\Sparktech\\Template\\prisma-mysql-backend\\winston\\error\\26-10-2025-16-error.log",
-            "hash": "c7ff14b1b71b8d903b925a671d832d8142609328e766297e2d7a4b4a67e300c9"
-        },
-        {
-            "date": 1761476561106,
-            "name": "C:\\Users\\Nadir Hossain\\Sparktech\\Template\\prisma-mysql-backend\\winston\\error\\26-10-2025-17-error.log",
-            "hash": "4f5949ac75128755dad81bde653e29f5931b6bfb4fb64a43cc00a12f13c0f943"
-        },
-        {
-            "date": 1761482326666,
-            "name": "C:\\Users\\Nadir Hossain\\Sparktech\\Template\\prisma-mysql-backend\\winston\\error\\26-10-2025-18-error.log",
-            "hash": "1dd7c36593a76219f36c892c0ac278efb698d6b51348dad2c79f9f9534a53dbf"
+            "date": 1761729894668,
+            "name": "C:\\Users\\Nadir Hossain\\Sparktech\\Template\\prisma-mysql-backend\\winston\\error\\29-10-2025-15-error.log",
+            "hash": "b5decc78258fcdb5b99c5b64dddace06620a56712fed1324b179d517b8594283"
         }
     ],
     "hashType": "sha256"

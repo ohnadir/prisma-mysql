@@ -2,6 +2,7 @@ import { UserRepository } from "../repositories/UserRepository";
 import { StatusCodes } from "http-status-codes";
 import ApiError from "../utils/ApiError";
 import { Prisma } from "@prisma/client";
+import { userQueue } from "../queues/userQueue";
 
 export class UserService {
     private userRepository: UserRepository;
@@ -20,6 +21,17 @@ export class UserService {
 
         // Add more business logic if needed (e.g., hash password)
         const newUser = await this.userRepository.create(data);
+
+        if (!newUser) {
+            throw new ApiError(StatusCodes.BAD_REQUEST, "Failed to create user");
+        }
+
+        await userQueue.add(
+            "user-verification-check",
+            { userId: newUser.id },
+            { delay: 1 * 60 * 1000 }
+        );
+
         return newUser;
     }
 

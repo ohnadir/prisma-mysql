@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\Users\\Nadir Hossain\\Sparktech\\Template\\prisma-mysql-backend\\logs\\errors\\.757af56de25439415982b7c838cacb50eedb3962-audit.json",
+    "files": [
+        {
+            "date": 1761558049649,
+            "name": "C:\\Users\\Nadir Hossain\\Sparktech\\Template\\prisma-mysql-backend\\logs\\errors\\2025-10-27-error.log",
+            "hash": "d6cfb593c2758e99366bfccb740ce440267ee6293c6ac1a0440445d2afe22864"
+        }
+    ],
+    "hashType": "sha256"
+}

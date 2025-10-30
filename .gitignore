@@ -2,8 +2,10 @@ node_modules
 # Keep environment variables out of version control
 .env
 
+uploads
+/winston
+
 /src/generated/prisma
 
-
-
 # yarn add --dev jest ts-jest @types/jest supertest @types/supertest
+# yarn add -D webpack webpack-cli ts-loader typescript webpack-node-externals

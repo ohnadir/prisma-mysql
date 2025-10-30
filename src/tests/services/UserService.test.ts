@@ -1,7 +1,6 @@
 import { UserRepository } from "../../repositories/UserRepository";
 import { UserService } from "../../services/UserService";
 
-
 jest.mock("../../src/repositories/UserRepository");
 
 const mockUserRepo = new UserRepository() as jest.Mocked<UserRepository>;

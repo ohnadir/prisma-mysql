@@ -3,6 +3,7 @@ import config from "../config";
 import { hashPassword } from "../utils/hashPassword";
 import { ROLES } from "../enum/user";
 import colors from 'colors';
+import { logger } from "../utils/logger";
 
 
 const superUser = {
@@ -26,9 +27,9 @@ const seedSuperAdmin = async () => {
         await Prisma.user.create({
             data: superUser
         });
-        console.log(colors.green('Super admin created successfully!'));
+        logger.info(colors.green('Super admin created successfully!'));
     }else{
-        console.log(colors.green('Super Admin Seeded.'));
+        logger.info(colors.green('Super Admin Seeded.'));
     }
 };
 

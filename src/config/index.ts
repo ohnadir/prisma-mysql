@@ -1,6 +1,11 @@
 import dotenv from "dotenv";
 import path from "path";
-dotenv.config({path: path.join(process.cwd(), '.env')});
+
+dotenv.config({
+    path: path.join(process.cwd(), '.env'),
+    processEnv: {},
+    quiet: true
+}).parsed;
 
 export default{
     ip_address: process.env.IP,
@@ -30,5 +35,9 @@ export default{
         password: process.env.ADMIN_PASSWORD,
         name: process.env.ADMIN_NAME || 'Super Admin',
     },
-    img_url: process.env.IMG_URL
+    img_url: process.env.IMG_URL,
+    bullConnection: {
+        host: process.env.REDIS_HOST,
+        port: Number(process.env.REDIS_PORT) || 6379
+    }
 }

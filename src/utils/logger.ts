@@ -1,18 +1,10 @@
 import path from 'path';
 import DailyRotateFile from 'winston-daily-rotate-file';
-const { createLogger, format, transports } = require('winston');
+import { createLogger, format, transports } from 'winston';
 const { combine, timestamp, label, printf } = format;
 
-interface IMessageProps{
-    level: string;
-    message: string;
-    label: string;
-    timestamp: Date;
-}
-
-
-const myFormat = printf(({level, message, label, timestamp }: IMessageProps) => {
-    const date = new Date(timestamp);
+const myFormat = printf(({ level, message, label, timestamp }) => {
+    const date = new Date(timestamp as string);
     const hour = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();

@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import catchAsync from "../utils/catchAsync";
 import sendResponse from "../utils/sendResponse";
 import { CategoryService } from "../services/CategoryService";
+// import { UserProducer } from '../events/producers/userProducer';
 
 export class CategoryController {
     private categoryService: CategoryService;
@@ -12,6 +13,14 @@ export class CategoryController {
 
     createCategory = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const result = await this.categoryService.createToDB(req.body);
+
+        // Kafka Event Emit
+        // await UserProducer.sendUserCreatedEvent({
+        //     id: user.id,
+        //     email: user.email,
+        // });
+
+
         sendResponse(res, {
             statusCode: 200,
             success: true,
@@ -49,5 +58,5 @@ export class CategoryController {
             data: result
         });
     })
-    
+
 }

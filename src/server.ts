@@ -4,6 +4,7 @@ import Prisma from "./config/prisma";
 import colors from 'colors';
 import config from "./config";
 import seedSuperAdmin from "./seed/superAdmin";
+import { logger } from "./utils/logger";
 
 
 // Catch uncaught exceptions (synchronous errors not caught anywhere else)
@@ -20,17 +21,17 @@ async function main() {
     try {
 
         await Prisma.$connect().then(() =>{
-            console.log(colors.green('🚀 Database connected successfully'));
+            logger.info(colors.green('🚀 Database connected successfully'));
             seedSuperAdmin();
         })
         .catch((error) => {
-            console.error(colors.red(`❌ Database connection error: ${error?.message}`));
+            logger.error(colors.red(`❌ Database connection error: ${error?.message}`));
             process.exit(1);
         });
 
 
         server = app.listen(Number(config.port), config.ip_address as string, () => {
-            console.log(colors.yellow(`♻️  Application listening on this api: http://${config.ip_address}:${config.port}`));
+            logger.info(colors.yellow(`♻️  Application listening on this api: http://${config.ip_address}:${config.port}`));
         });
 
         //socket
@@ -46,7 +47,7 @@ async function main() {
         global.io = io;
 
     } catch (error) {
-        console.error("❌ Database connection failed:", error);
+        logger.error("❌ Database connection failed:", error);
         process.exit(1);
     }
 
@@ -54,7 +55,7 @@ async function main() {
     process.on('unhandledRejection', error => {
         if (server) {
             server.close(() => {
-                console.error('Unhandled Rejection Detected:', error);
+                logger.error('Unhandled Rejection Detected:', error);
                 process.exit(1);
             });
         } else {
