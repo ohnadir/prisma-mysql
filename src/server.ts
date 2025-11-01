@@ -5,6 +5,8 @@ import colors from 'colors';
 import config from "./config";
 import seedSuperAdmin from "./seed/superAdmin";
 import { logger } from "./utils/logger";
+import { connectKafka, producer } from "./config/kafka";
+import { runEmailConsumer } from "./events/consumers/userConsumer";
 
 
 // Catch uncaught exceptions (synchronous errors not caught anywhere else)
@@ -30,7 +32,9 @@ async function main() {
         });
 
 
-        server = app.listen(Number(config.port), config.ip_address as string, () => {
+        server = app.listen(Number(config.port), config.ip_address as string, async () => {
+            await connectKafka();
+            await runEmailConsumer();
             logger.info(colors.yellow(`♻️  Application listening on this api: http://${config.ip_address}:${config.port}`));
         });
 
@@ -64,5 +68,30 @@ async function main() {
     });
 }
 
-
 main();
+
+const shutdown = async (signal: string) => {
+  logger.info(`🧩 ${signal} received — shutting down gracefully...`);
+
+  try {
+    if (server) {
+      logger.info("🛑 Closing HTTP server...");
+      await new Promise<void>((resolve) => server.close(() => resolve()));
+    }
+
+    logger.info("🔌 Disconnecting Kafka...");
+    await producer.disconnect();
+
+    logger.info("💾 Disconnecting Prisma...");
+    await Prisma.$disconnect();
+
+    logger.info("✅ Shutdown complete. Exiting process.");
+    process.exit(0);
+  } catch (err) {
+    logger.error("❌ Error during shutdown:", err);
+    process.exit(1);
+  }
+};
+
+process.on("SIGTERM", () => shutdown("SIGTERM")); // production
+process.on("SIGINT", () => shutdown("SIGINT"));   // local Ctrl+C

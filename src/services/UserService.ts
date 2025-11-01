@@ -3,9 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import ApiError from "../utils/ApiError";
 import { Prisma } from "@prisma/client";
 import { userQueue } from "../queues/userQueue";
-import { UserProducer } from "../events/producers/userProducer";
-
-const userProducer = new UserProducer()
+import { sendEmailCreatedEvent } from "../events/producers/userProducer";
 
 export class UserService {
     private userRepository: UserRepository;
@@ -35,7 +33,7 @@ export class UserService {
             { delay: 1 * 60 * 1000 }
         );
 
-        userProducer.sendOTPEvent({ email: data.email, name: data.name });
+        await sendEmailCreatedEvent({ email: data.email, name: data.name });
 
         return newUser;
     }
