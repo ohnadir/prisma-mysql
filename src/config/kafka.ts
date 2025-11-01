@@ -13,5 +13,11 @@ export const kafka = new Kafka({
     brokers: [process.env.KAFKA_BROKER || 'localhost:9092'],
 });
 
-export const kafkaProducer = kafka.producer();
-export const kafkaConsumer = kafka.consumer({ groupId: 'my-node-group' });
+export const producer = kafka.producer();
+export const consumer = kafka.consumer({ groupId: 'my-node-group' });
+
+export async function connectKafka() {
+  await producer.connect();
+  await consumer.connect();
+  console.log("✅ Kafka Connected");
+}
