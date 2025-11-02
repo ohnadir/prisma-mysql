@@ -4,6 +4,7 @@ import ApiError from "../utils/ApiError";
 import { Prisma } from "@prisma/client";
 import { userQueue } from "../queues/userQueue";
 import { sendEmailCreatedEvent } from "../events/producers/userProducer";
+import generateOTP from "../utils/generateOTP";
 
 export class UserService {
     private userRepository: UserRepository;
@@ -20,6 +21,14 @@ export class UserService {
             throw new ApiError(StatusCodes.BAD_REQUEST, "User already exists");
         }
 
+        const otp = generateOTP();
+
+        data.authentication = {
+            isResetPassword: false,
+            oneTimeCode: otp,
+            expireAt: new Date(Date.now() + 3 * 60000),
+        };
+
         // Add more business logic if needed (e.g., hash password)
         const newUser = await this.userRepository.create(data);
 
@@ -33,7 +42,7 @@ export class UserService {
             { delay: 1 * 60 * 1000 }
         );
 
-        await sendEmailCreatedEvent({ email: data.email, name: data.name });
+        await sendEmailCreatedEvent({ email: data.email, name: data.name, otp: otp });
 
         return newUser;
     }

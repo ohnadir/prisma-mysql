@@ -11,9 +11,11 @@ dotenv.config({
 
 const Prisma = new PrismaClient();
 const bullConnection = {
-        host: process.env.REDIS_HOST,
-        port: Number(process.env.REDIS_PORT) || 6379
-    }
+    host: process.env.REDIS_HOST,
+    port: Number(process.env.REDIS_PORT) || 6379,
+    enableReadyCheck: false,
+    maxRetriesPerRequest: null
+}
 
 // Queue for scheduling status updates
 export const userQueue = new Queue("user-verification-check", { connection: bullConnection });

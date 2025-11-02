@@ -1,21 +1,23 @@
-import { KAFKA_TOPICS } from '../topics';
 import { consumer } from "../../config/kafka";
+import { KAFKA_TOPICS } from "../topics";
 
 export async function runEmailConsumer() {
-    await consumer.subscribe({ topic: "user-created", fromBeginning: false });
+    try {
+        console.log("🚀 Starting email consumer...");
+        await consumer.subscribe({ topic: KAFKA_TOPICS.SEND_EMAIL_OTP, fromBeginning: true });
 
-    await consumer.run({
-        eachMessage: async ({ topic, partition, message }) => {
-            const data = JSON.parse(message.value!.toString());
-            console.log("📩 New user signup detected:", data.email);
-
-            // Simulate sending email
-            await sendWelcomeEmail(data.email, data.name);
-        },
-    });
+        await consumer.run({
+            eachMessage: async ({ topic, partition, message }) => {
+                console.log("📩 Message received from Kafka:", message.value?.toString());
+                const data = JSON.parse(message.value!.toString());
+                await sendWelcomeEmail(data.email, data.name);
+            },
+        });
+    } catch (err) {
+        console.error("❌ Consumer failed to start:", err);
+    }
 }
 
 async function sendWelcomeEmail(email: string, name: string) {
-    // You can integrate Mailgun, SendGrid, etc.
     console.log(`✅ Email sent to ${email}: Welcome ${name}!`);
 }

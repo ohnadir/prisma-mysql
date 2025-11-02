@@ -34,9 +34,10 @@ const createAccount = (values: ICreateAccount) => {
                     <!-- Greeting -->
                     <h2
                         style="
-                            color: #000000; 
-                            font-size: 24px; 
-                            margin-bottom: 20px;
+                            color: #555; 
+                            font-size: 24px;
+                            margin-top: 16px;
+                            margin-bottom: 16px;
                         "
                     >
                         Verify your Whop Account
@@ -68,12 +69,13 @@ const createAccount = (values: ICreateAccount) => {
                             color: #555; 
                             font-size: 16px; 
                             line-height: 1.5;
-                            margin-bottom: 20px;
+                            margin-top: 16px;
+                            margin-bottom: 16px;
                         "
                     >
                         This code is valid for
                         <span
-                            style="color: #000000; font-weight: 600;"
+                            style="color: #555; font-weight: 600;"
                         >
                             3 minutes
                         </span>.    

@@ -1,6 +1,8 @@
-import { Kafka } from 'kafkajs';
+import { Kafka, PartitionAssigners, Partitioners } from 'kafkajs';
 import dotenv from "dotenv";
 import path from "path";
+import { logger } from '../utils/logger';
+import colors from 'colors';
 
 dotenv.config({
   path: path.join(process.cwd(), '.env'),
@@ -10,14 +12,16 @@ dotenv.config({
 
 export const kafka = new Kafka({
   clientId: 'my-node-app',
-  brokers: [process.env.KAFKA_BROKER || 'localhost:9092'],
+  brokers: ['localhost:9092'],
 });
 
-export const producer = kafka.producer();
+export const producer = kafka.producer({
+  createPartitioner: Partitioners.LegacyPartitioner,
+});
 export const consumer = kafka.consumer({ groupId: 'my-node-group' });
 
 export async function connectKafka() {
   await producer.connect();
   await consumer.connect();
-  console.log("✅ Kafka Connected");
+  logger.info(colors.green('⚡ Kafka Connected'));
 }

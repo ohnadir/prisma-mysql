@@ -38,6 +38,8 @@ async function main() {
             logger.info(colors.yellow(`♻️  Application listening on this api: http://${config.ip_address}:${config.port}`));
         });
 
+        
+
         //socket
         const io = new Server(server, {
             pingTimeout: 60000,

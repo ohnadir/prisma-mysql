@@ -1,4 +1,4 @@
 export const KAFKA_TOPICS = {
-    USER_CREATED: 'user.created',
+    SEND_EMAIL_OTP: 'send.email.otp',
     ORDER_PLACED: 'order.placed',
 };
