@@ -1,10 +1,10 @@
 import { UserRepository } from "../repositories/UserRepository";
 import { StatusCodes } from "http-status-codes";
 import ApiError from "../utils/ApiError";
-import { Prisma } from "@prisma/client";
 // import { userQueue } from "../queues/userQueue";
 import { sendEmailCreatedEvent } from "../events/producers/userProducer";
 import generateOTP from "../utils/generateOTP";
+import type { Prisma } from "@prisma/client"; 
 
 export class UserService {
     private userRepository: UserRepository;

@@ -1,8 +1,8 @@
 import { StatusCodes } from "http-status-codes";
 import ApiError from "../utils/ApiError";
-import { Prisma } from "@prisma/client";
 import unlinkFile from "../utils/unlinkFile";
 import { CategoryRepository } from "../repositories/CategoryRepository";
+import type { Prisma } from "@prisma/client";
 
 export class CategoryService {
     private categoryRepository: CategoryRepository;

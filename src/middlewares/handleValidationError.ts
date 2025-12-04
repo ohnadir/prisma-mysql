@@ -1,5 +1,6 @@
-import { Prisma } from "@prisma/client";
 import { IErrorMessage } from "../types/errors.types";
+import PrismaClientPkg from "@prisma/client";
+const { Prisma } = PrismaClientPkg;
 
 const handleValidationError = (error: unknown) => {
     const errorMessages: IErrorMessage[] = [];

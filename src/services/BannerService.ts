@@ -1,8 +1,8 @@
 import { StatusCodes } from "http-status-codes";
 import ApiError from "../utils/ApiError";
-import { Prisma } from "@prisma/client";
 import { BannerRepository } from "../repositories/BannerRepository";
 import unlinkFile from "../utils/unlinkFile";
+import type { Prisma } from "@prisma/client";
 
 export class BannerService {
     private bannerRepository: BannerRepository;
