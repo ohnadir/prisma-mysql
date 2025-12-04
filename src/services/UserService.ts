@@ -2,7 +2,7 @@ import { UserRepository } from "../repositories/UserRepository";
 import { StatusCodes } from "http-status-codes";
 import ApiError from "../utils/ApiError";
 import { Prisma } from "@prisma/client";
-import { userQueue } from "../queues/userQueue";
+// import { userQueue } from "../queues/userQueue";
 import { sendEmailCreatedEvent } from "../events/producers/userProducer";
 import generateOTP from "../utils/generateOTP";
 
@@ -36,13 +36,13 @@ export class UserService {
             throw new ApiError(StatusCodes.BAD_REQUEST, "Failed to create user");
         }
 
-        await userQueue.add(
-            "user-verification-check",
-            { userId: newUser.id },
-            { delay: 1 * 60 * 1000 }
-        );
+        /* await userQueue.add( */
+        /*     "user-verification-check", */
+        /*     { userId: newUser.id }, */
+        /*     { delay: 1 * 60 * 1000 } */
+        /* ); */
 
-        await sendEmailCreatedEvent({ email: data.email, name: data.name, otp: otp });
+        /* await sendEmailCreatedEvent({ email: data.email, name: data.name, otp: otp }); */
 
         return newUser;
     }

@@ -1,12 +1,15 @@
 import express, { Request, Response } from 'express'
 import globalErrorHandler from './middlewares/globalErrorHandler';
-import router from './routes';
+// import router from './routes';
 import { Morgan } from './utils/morgan';
 import { StatusCodes } from 'http-status-codes';
+import compression from 'compression';
 const app = express()
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// Apply compression globally
+app.use(compression());
 
 // morgan
 app.use(Morgan.successHandler);
@@ -16,7 +19,7 @@ app.use(Morgan.errorHandler);
 app.use(express.static('uploads'));
 
 //router
-app.use('/api/v1', router);
+// app.use('/api/v1', router);
 
 
 //global error handle

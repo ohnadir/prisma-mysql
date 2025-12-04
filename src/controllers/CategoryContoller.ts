@@ -29,7 +29,7 @@ export class CategoryController {
         });
     })
 
-    retrivedCategories = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    retrievedCategories = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const result = await this.categoryService.retrieveFromDB();
         sendResponse(res, {
             statusCode: 200,

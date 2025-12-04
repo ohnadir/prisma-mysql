@@ -1,4 +1,4 @@
-import express, { NextFunction, Response, Request } from 'express';
+import express from 'express';
 import validateRequest from '../middlewares/validateRequest';
 import { createUserSchema } from '../validators/userValidator';
 import { UserController } from '../controllers/UserController';

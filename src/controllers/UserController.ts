@@ -19,7 +19,7 @@ export class UserController {
         });
     })
 
-    retrivedProfile = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    retrievedProfile = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         await this.userService.createUser(req.body);
         sendResponse(res, {
             statusCode: 200,

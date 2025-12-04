@@ -20,7 +20,7 @@ export class BannerController {
         });
     })
 
-    retrivedBanners = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    retrievedBanners = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
         const result = await this.bannerService.retrieveFromDB();
         sendResponse(res, {
             statusCode: 200,

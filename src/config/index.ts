@@ -3,9 +3,8 @@ import path from "path";
 
 dotenv.config({
     path: path.join(process.cwd(), '.env'),
-    processEnv: {},
     quiet: true
-}).parsed;
+});
 
 export default{
     ip_address: process.env.IP,
@@ -34,6 +33,14 @@ export default{
         email:process.env.ADMIN_EMAIL!,
         password: process.env.ADMIN_PASSWORD,
         name: process.env.ADMIN_NAME || 'Super Admin',
+    },
+    database:{
+        host: process.env.DATABASE_HOST,
+        port: Number(process.env.DATABASE_PORT) || 3306,
+        user: process.env.DATABASE_USER,
+        password: process.env.DATABASE_PASSWORD,
+        name: process.env.DATABASE_NAME,
+        poolLimit: Number(process.env.DATABASE_POOL_LIMIT) || 5
     },
     img_url: process.env.IMG_URL,
     bullConnection: {

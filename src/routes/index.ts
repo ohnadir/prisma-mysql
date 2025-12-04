@@ -6,8 +6,8 @@ const router = express.Router();
 
 const apiRoutes = [
     { path: "/user", route: UserRoutes },
-    { path: "/banner", route: BannerRoutes },
-    { path: "/category", route: CategoryRoutes },
+    // { path: "/banner", route: BannerRoutes },
+    // { path: "/category", route: CategoryRoutes },
 ]
 
 apiRoutes.forEach(route => router.use(route.path, route.route));

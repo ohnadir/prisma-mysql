@@ -12,3 +12,8 @@ logs/
 
 # yarn add --dev jest ts-jest @types/jest supertest @types/supertest
 # yarn add -D webpack webpack-cli ts-loader typescript webpack-node-externals
+/src/generated/prisma
+
+/src/generated/prisma
+
+/generated/prisma

@@ -1,7 +1,7 @@
 import { Queue, Worker, QueueEvents } from "bullmq";
-import { PrismaClient } from "@prisma/client";
 import dotenv from "dotenv";
 import path from "path";
+import Prisma from "../config/prisma";
 
 dotenv.config({
     path: path.join(process.cwd(), '.env'),
@@ -9,7 +9,7 @@ dotenv.config({
     quiet: true
 }).parsed;
 
-const Prisma = new PrismaClient();
+
 const bullConnection = {
     host: process.env.REDIS_HOST,
     port: Number(process.env.REDIS_PORT) || 6379,

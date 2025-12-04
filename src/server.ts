@@ -1,12 +1,12 @@
 import { Server } from "socket.io";
 import app from "./app";
-import Prisma from "./config/prisma";
 import colors from 'colors';
 import config from "./config";
 import seedSuperAdmin from "./seed/superAdmin";
 import { logger } from "./utils/logger";
 import { connectKafka, producer } from "./config/kafka";
 import { runEmailConsumer } from "./events/consumers/userConsumer";
+import Prisma from "./config/prisma";
 
 
 // Catch uncaught exceptions (synchronous errors not caught anywhere else)
@@ -33,8 +33,8 @@ async function main() {
 
 
         server = app.listen(Number(config.port), config.ip_address as string, async () => {
-            await connectKafka();
-            await runEmailConsumer();
+            // await connectKafka();
+            // await runEmailConsumer();
             logger.info(colors.yellow(`♻️  Application listening on this api: http://${config.ip_address}:${config.port}`));
         });
 
@@ -82,7 +82,7 @@ const shutdown = async (signal: string) => {
     }
 
     logger.info("🔌 Disconnecting Kafka...");
-    await producer.disconnect();
+    // await producer.disconnect();
 
     logger.info("💾 Disconnecting Prisma...");
     await Prisma.$disconnect();

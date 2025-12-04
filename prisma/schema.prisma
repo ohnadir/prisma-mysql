@@ -4,7 +4,6 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
 }
 
 enum Roles {
@@ -18,7 +17,7 @@ model FcmToken {
   token  String @unique
   userId Int
   user   User   @relation(fields: [userId], references: [id])
-  @@index([userId]) // Index for faster lookups
+  @@index([userId])
 }
 
 model User {
