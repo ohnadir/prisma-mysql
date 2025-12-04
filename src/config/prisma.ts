@@ -1,6 +1,7 @@
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
-import { PrismaClient } from "@prisma/client";
+import PrismaClientPkg from "@prisma/client"; // default import for runtime
 import config from "./index";
+const { PrismaClient } = PrismaClientPkg;
 
 const adapter = new PrismaMariaDb({
   host: config.database.host,
@@ -11,5 +12,5 @@ const adapter = new PrismaMariaDb({
   connectionLimit: 10,
 });
 
-const Prisma = new PrismaClient({ adapter, log: ['error', 'warn'], });
+const Prisma = new PrismaClient({ adapter, log: ['error', 'warn'] });
 export default Prisma;
