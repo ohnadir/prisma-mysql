@@ -5,7 +5,6 @@ import { ROLES } from "../enum/user";
 import colors from 'colors';
 import { logger } from "../utils/logger";
 
-
 const superUser = {
     name: config.admin.name,
     role: ROLES.SUPER_ADMIN,
