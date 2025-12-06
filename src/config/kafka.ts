@@ -1,14 +1,12 @@
-import { Kafka, PartitionAssigners, Partitioners } from 'kafkajs';
+import { Kafka, Partitioners } from 'kafkajs';
 import dotenv from "dotenv";
 import path from "path";
 import { logger } from '../utils/logger';
 import colors from 'colors';
 
 dotenv.config({
-  path: path.join(process.cwd(), '.env'),
-  processEnv: {},
-  quiet: true
-}).parsed;
+  path: path.join(process.cwd(), '.env')
+});
 
 export const kafka = new Kafka({
   clientId: 'my-node-app',

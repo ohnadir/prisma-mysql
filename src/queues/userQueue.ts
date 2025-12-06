@@ -1,18 +1,22 @@
 import { Queue, Worker, QueueEvents } from "bullmq";
-import dotenv from "dotenv";
-import path from "path";
-import Prisma from "../config/prisma";
+import { PrismaMariaDb } from '@prisma/adapter-mariadb';
+import { PrismaClient } from "@prisma/client";
+import config from "../config";
 
-dotenv.config({
-    path: path.join(process.cwd(), '.env'),
-    processEnv: {},
-    quiet: true
-}).parsed;
+const adapter = new PrismaMariaDb({
+    host: config.database.host,
+    user: config.database.user,
+    password: config.database.password,
+    database: config.database.name,
+    port: config.database.port,
+    connectionLimit: 10,
+});
 
+const Prisma = new PrismaClient({ adapter, log: ['error', 'warn'], });
 
 const bullConnection = {
-    host: process.env.REDIS_HOST,
-    port: Number(process.env.REDIS_PORT) || 6379,
+    host: config.bullConnection.host,
+    port: config.bullConnection.port,
     enableReadyCheck: false,
     maxRetriesPerRequest: null
 }

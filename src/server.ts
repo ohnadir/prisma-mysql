@@ -33,8 +33,8 @@ async function main() {
 
 
         server = app.listen(Number(config.port), config.ip_address as string, async () => {
-            // await connectKafka();
-            // await runEmailConsumer();
+            await connectKafka();
+            await runEmailConsumer();
             logger.info(colors.yellow(`♻️  Application listening on this api: http://${config.ip_address}:${config.port}`));
         });
 
