@@ -34,6 +34,10 @@ export default{
         password: process.env.ADMIN_PASSWORD,
         name: process.env.ADMIN_NAME || 'Super Admin',
     },
+    redis: {
+        host: process.env.REDIS_HOST,
+        port: process.env.REDIS_PORT
+    },
     database:{
         host: process.env.DATABASE_HOST,
         port: Number(process.env.DATABASE_PORT) || 3306,

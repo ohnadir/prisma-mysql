@@ -4,14 +4,11 @@ import colors from 'colors';
 import config from "./config";
 import seedSuperAdmin from "./seed/superAdmin";
 import { logger } from "./utils/logger";
-import { connectKafka, producer } from "./config/kafka";
-import { runEmailConsumer } from "./events/consumers/userConsumer";
 import Prisma from "./config/prisma";
-
+import { connectRedis } from "./config/redis";
 
 // Catch uncaught exceptions (synchronous errors not caught anywhere else)
 process.on('uncaughtException', error => {
-
     console.error('Uncaught Exception Detected:', error);
     process.exit(1);
 });
@@ -22,19 +19,19 @@ let server: any;
 async function main() {
     try {
 
+        // Connect to Redis
+        connectRedis();
+
         await Prisma.$connect().then(() =>{
             logger.info(colors.green('🚀 Database connected successfully'));
             seedSuperAdmin();
-        })
-        .catch((error) => {
+        }).catch((error:any) => {
             logger.error(colors.red(`❌ Database connection error: ${error?.message}`));
             process.exit(1);
         });
 
 
         server = app.listen(Number(config.port), config.ip_address as string, async () => {
-            await connectKafka();
-            await runEmailConsumer();
             logger.info(colors.yellow(`♻️  Application listening on this api: http://${config.ip_address}:${config.port}`));
         });
 
