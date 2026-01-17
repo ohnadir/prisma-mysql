@@ -30,9 +30,8 @@ async function main() {
             process.exit(1);
         });
 
-
         server = app.listen(Number(config.port), config.ip_address as string, async () => {
-            logger.info(colors.yellow(`♻️  Application listening on this api: http://${config.ip_address}:${config.port}`));
+            logger.info(colors.yellow(`♻️  Application listening on this api: ${config.port}`));
         });
 
         
@@ -77,9 +76,6 @@ const shutdown = async (signal: string) => {
       logger.info("🛑 Closing HTTP server...");
       await new Promise<void>((resolve) => server.close(() => resolve()));
     }
-
-    logger.info("🔌 Disconnecting Kafka...");
-    // await producer.disconnect();
 
     logger.info("💾 Disconnecting Prisma...");
     await Prisma.$disconnect();

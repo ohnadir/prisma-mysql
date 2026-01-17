@@ -1,0 +1,39 @@
+#docker-compose.yml
+version: "3"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "${PORT}:8080"
+    volumes:
+      - .:/home/app
+      - /home/app/node_modules
+    env_file:
+      - .env
+    depends_on:
+      - mysql
+      - redis
+
+  # MySQL Service
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "12345678"   # REQUIRED!
+      MYSQL_DATABASE: "myDatabase"
+      # ports:
+      # - "${DATABASE_PORT}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # redis Service
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: always
+
+volumes:
+  mysql_data:
