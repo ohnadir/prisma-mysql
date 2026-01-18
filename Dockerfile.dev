@@ -9,6 +9,9 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 8080
+# Generate Prisma client
+RUN npx prisma generate
 
-CMD ["npm", "run", "dev"]
+EXPOSE 5000
+
+CMD npx prisma db push && npm run dev

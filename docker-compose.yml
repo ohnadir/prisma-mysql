@@ -1,20 +1,25 @@
-#docker-compose.yml
-version: "3"
+version: "3.9"
+
 services:
+  # Node App
   app:
     build:
       context: .
       dockerfile: Dockerfile.dev
     ports:
-      - "${PORT}:8080"
+      - "3002:5000"
     volumes:
       - .:/home/app
       - /home/app/node_modules
     env_file:
       - .env
     depends_on:
-      - mysql
-      - redis
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - internalnet
 
   # MySQL Service
   mysql:
@@ -22,18 +27,35 @@ services:
     container_name: mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: "12345678"   # REQUIRED!
-      MYSQL_DATABASE: "myDatabase"
-      # ports:
-      # - "${DATABASE_PORT}:3306"
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin123
+      MYSQL_DATABASE: myDatabase
+    ports:
+      - "3306:3306" 
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "admin", "-padmin123"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - internalnet
 
-  # redis Service
+  # Redis Service
   redis:
     image: redis:7-alpine
     container_name: redis
     restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - internalnet
 
 volumes:
   mysql_data:
+
+networks:
+  internalnet:
+    driver: bridge

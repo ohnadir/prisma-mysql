@@ -4,6 +4,7 @@ import globalErrorHandler from './middlewares/globalErrorHandler';
 import { Morgan } from './utils/morgan';
 import { StatusCodes } from 'http-status-codes';
 import compression from 'compression';
+import { welcome } from './utils/welcome';
 const app = express()
 
 app.use(express.json());
@@ -26,7 +27,7 @@ app.use(express.static('uploads'));
 app.use(globalErrorHandler);
 
 app.get('/', (req: Request, res: Response) => {
-    res.send('Hello World!')
+    res.send(welcome());
 });
 
 // handle not found route
