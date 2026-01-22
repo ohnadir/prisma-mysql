@@ -11,7 +11,6 @@ export const getSingleFilePath = async (files: any, folderName: IFolderName) => 
         const optimizedFilePath = await optimizeImage(originalFilePath);
 
         const relativePath = optimizedFilePath.replace(path.join(process.cwd(), 'uploads'), '');
-        console.log(`${config.img_url}${relativePath.replace(/\\/g, '/')}`);
         return `${config.img_url}${relativePath.replace(/\\/g, '/')}`;
     }
     return undefined;

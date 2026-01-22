@@ -14,7 +14,6 @@ export const connectRedis = () => {
     });
 
     redisClient.on('error', (error) => {
-        console.log(error)
         errorLogger.error('Redis connection error', error);
     });
 }

@@ -1,13 +1,13 @@
 import express from 'express';
 import { UserRoutes } from './userRoutes';
-import { BannerRoutes } from './bannerRoutes';
-import { CategoryRoutes } from './categoryRoutes';
+import { RoomRoutes } from './room.routes';
+import { AuthRoutes } from './auth.routes';
 const router = express.Router();
 
 const apiRoutes = [
     { path: "/user", route: UserRoutes },
-    // { path: "/banner", route: BannerRoutes },
-    // { path: "/category", route: CategoryRoutes },
+    { path: "/room", route: RoomRoutes },
+    { path: "/auth", route: AuthRoutes }
 ]
 
 apiRoutes.forEach(route => router.use(route.path, route.route));

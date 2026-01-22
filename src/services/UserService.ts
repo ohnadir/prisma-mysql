@@ -1,20 +1,21 @@
 import { UserRepository } from "../repositories/UserRepository";
 import { StatusCodes } from "http-status-codes";
 import ApiError from "../utils/ApiError";
-import { userQueue } from "../queues/userQueue";
-import { sendEmailCreatedEvent } from "../events/producers/userProducer";
+import { emailVerificationQueue } from "../queues/emailVerificationQueue";
 import generateOTP from "../utils/generateOTP";
 import type { Prisma } from "@prisma/client";
+import prisma from "../config/prisma";
 
 export class UserService {
     private userRepository: UserRepository;
 
     constructor() {
-        this.userRepository = new UserRepository();
+        this.userRepository = new UserRepository(prisma);
     }
 
     // Create a new user
     async createUser(data: Prisma.UserCreateInput) {
+
         // Example: check if user already exists
         const existingUser = await this.userRepository.findByEmail(data.email);
         if (existingUser) {
@@ -26,23 +27,25 @@ export class UserService {
         data.authentication = {
             isResetPassword: false,
             oneTimeCode: otp,
-            expireAt: new Date(Date.now() + 3 * 60000),
+            expireAt: new Date(Date.now() + 3 * 60 * 1000).toISOString()
         };
 
-        // Add more business logic if needed (e.g., hash password)
         const newUser = await this.userRepository.create(data);
 
         if (!newUser) {
             throw new ApiError(StatusCodes.BAD_REQUEST, "Failed to create user");
         }
 
-        await userQueue.add(
-            "user-verification-check",
-            { userId: newUser.id },
-            { delay: 1 * 60 * 1000 }
+        await emailVerificationQueue.add(
+            "verification-otp-job",
+            { email: data.email, name: data.name, otp: otp },
+            {
+                attempts: 3,
+                backoff: { type: "exponential", delay: 3000 },
+                removeOnComplete: true,
+                removeOnFail: { age: 24 * 60 * 60 } // remove failed jobs after 24h
+            }
         );
-
-        await sendEmailCreatedEvent({ email: data.email, name: data.name, otp: otp });
 
         return newUser;
     }

@@ -27,13 +27,8 @@ export default {
             env_development: {
                 NODE_ENV: 'development',
                 PORT: 4000
-            },
-
-            // Environment variables for staging
-            env_staging: {
-                NODE_ENV: 'staging',
-                PORT: 4000
             }
+            
         }
     ]
 };
