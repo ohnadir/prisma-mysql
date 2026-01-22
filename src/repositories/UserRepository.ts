@@ -1,15 +1,23 @@
 import { PrismaClient, User, Prisma } from "@prisma/client";
-import { IUser } from "../types/user.types";
+import { hashPassword } from "../utils/hashPassword";
 
 export class UserRepository {
-    private prisma: PrismaClient;
+    private readonly prisma: PrismaClient;
 
-    constructor() {
-        this.prisma = new PrismaClient();
+    constructor(prismaClient: PrismaClient) {
+        this.prisma = prismaClient;
     }
 
     async create(data: Prisma.UserCreateInput): Promise<User> {
-        return this.prisma.user.create({ data });
+        const { password, ...rest } = data;
+        const hashedPassword = await hashPassword(password);
+
+        return this.prisma.user.create({
+            data: {
+                ...rest,
+                password: hashedPassword
+            },
+        });
     }
 
     async findById(id: string): Promise<User | null> {

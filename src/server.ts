@@ -30,8 +30,8 @@ async function main() {
             process.exit(1);
         });
 
-        server = app.listen(Number(config.port), '0.0.0.0', async () => {
-            logger.info(colors.yellow(`♻️  Application listening on this api: http://localhost:${config.port}`));
+        server = app.listen(Number(config.port), config.ip_address as string, async () => {
+            logger.info(colors.yellow(`♻️  Application listening on this api: http://${config.ip_address}:${config.port}`));
         });
 
         

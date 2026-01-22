@@ -31,7 +31,7 @@ export class BannerController {
     })
 
     updateBanner = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-        const result = await this.bannerService.updateToDB(req.params.id, req.body);
+        const result = await this.bannerService.updateToDB(req.params.id as string, req.body);
         sendResponse(res, {
             statusCode: 200,
             success: true,
@@ -41,7 +41,7 @@ export class BannerController {
     })
 
     deleteBanner = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-        const result = await this.bannerService.deleteFromDB(req.params.id);
+        const result = await this.bannerService.deleteFromDB(req.params.id as string);
         sendResponse(res, {
             statusCode: 200,
             success: true,

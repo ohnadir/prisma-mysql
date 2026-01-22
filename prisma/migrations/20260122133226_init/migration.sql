@@ -1,11 +1,11 @@
 -- CreateTable
-CREATE TABLE `FcmToken` (
+CREATE TABLE `fcm_tokens` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `token` VARCHAR(191) NOT NULL,
-    `userId` INTEGER NOT NULL,
+    `user` INTEGER NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    UNIQUE INDEX `FcmToken_token_key`(`token`),
-    INDEX `FcmToken_userId_idx`(`userId`),
+    INDEX `fcm_tokens_user_idx`(`user`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -63,5 +63,46 @@ CREATE TABLE `Faq` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `rooms` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `status` BOOLEAN NOT NULL DEFAULT true,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `messages` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `roomId` INTEGER NOT NULL,
+    `senderId` INTEGER NOT NULL,
+    `text` TEXT NULL,
+    `image` VARCHAR(500) NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    INDEX `messages_roomId_idx`(`roomId`),
+    INDEX `messages_senderId_idx`(`senderId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `_RoomParticipants` (
+    `A` INTEGER NOT NULL,
+    `B` INTEGER NOT NULL,
+
+    UNIQUE INDEX `_RoomParticipants_AB_unique`(`A`, `B`),
+    INDEX `_RoomParticipants_B_index`(`B`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
-ALTER TABLE `FcmToken` ADD CONSTRAINT `FcmToken_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `messages` ADD CONSTRAINT `messages_roomId_fkey` FOREIGN KEY (`roomId`) REFERENCES `rooms`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `messages` ADD CONSTRAINT `messages_senderId_fkey` FOREIGN KEY (`senderId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_RoomParticipants` ADD CONSTRAINT `_RoomParticipants_A_fkey` FOREIGN KEY (`A`) REFERENCES `rooms`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_RoomParticipants` ADD CONSTRAINT `_RoomParticipants_B_fkey` FOREIGN KEY (`B`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

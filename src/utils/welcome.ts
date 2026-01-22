@@ -1,149 +1,384 @@
 export const welcome = () => {
     const date = new Date(Date.now());
-    const hours = date.getHours();
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
     let greeting = '';
 
-    if (hours < 12) {
-        greeting = "Good morning! 🌞 Let's get the day started!";
-    } else if (hours < 18) {
-        greeting = "Good afternoon! 🌤️ Keep the momentum going!";
+    if (hours < 12 && ampm === 'AM') {
+        greeting = "Good Morning! 🌞 ";
+    } else if (hours >= 12 && hours < 6 && ampm === 'PM') {
+        greeting = "Good Afternoon! 🌤️";
     } else {
-        greeting = "Good evening! 🌙 Hope you had a fantastic day!";
+        greeting = "Good Evening! 🌙";
     }
 
+
     return `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Welcome</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <style>
-            /* Floating Circles Animation */
-            @keyframes float {
-                0%,100% { transform: translateY(0) rotate(0deg); }
-                50% { transform: translateY(-20px) rotate(180deg); }
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8" />
+            <title>Prisma</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <!-- Google Font -->
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+            <style>
+                :root {
+                --bg: #070707;
+                --card: #0f0f0f;
+                --border: #1c1c1c;
+                --text: #eaeaea;
+                --muted: #9b9b9b;
+                --accent: #ff9f1c;
+                --green: #3cff7f;
+                --glow: rgba(255, 159, 28, 0.35);
             }
 
-            /* Particles Animation */
-            @keyframes particles {
-                0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-                10% { opacity: 1; }
-                90% { opacity: 1; }
-                100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Inter', sans-serif;
             }
 
-            /* Gradient Text Animation */
-            @keyframes gradientShift {
-                0% { background-position: 0% 50%; }
-                50% { background-position: 100% 50%; }
-                100% { background-position: 0% 50%; }
+            body {
+                background:
+                    radial-gradient(circle at top, #111 0%, #070707 60%),
+                    repeating-linear-gradient(
+                    90deg,
+                    rgba(255,255,255,0.02) 0,
+                    rgba(255,255,255,0.02) 1px,
+                    transparent 1px,
+                    transparent 40px
+                );
+                color: var(--text);
+                min-height: 100vh;
+                padding: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
 
-            .floating-circle {
-                position: absolute;
+            .dashboard {
+                max-width: 1300px;
+                margin: auto;
+                display: grid;
+                grid-template-columns: 2fr 1fr;
+                gap: 24px;
+            }
+
+            .card {
+                background: linear-gradient(180deg, #0f0f0f, #0b0b0b);
+                border: 1px solid var(--border);
+                border-radius: 18px;
+                padding: 28px;
+                position: relative;
+                box-shadow: 0 0 40px rgba(0,0,0,0.6);
+            }
+
+            /* SERVER STATUS */
+            .status small {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                color: var(--muted);
+                letter-spacing: 1px;
+            }
+
+            .dot {
+                width: 10px;
+                height: 10px;
+                background: var(--green);
                 border-radius: 50%;
-                background: rgba(255,255,255,0.1);
-                backdrop-filter: blur(10px);
-                animation: float 6s ease-in-out infinite;
+                box-shadow: 0 0 10px var(--green);
             }
 
-            .particle {
+            .status h1 {
+                margin-top: 20px;
+                font-size: 56px;
+                line-height: 1.1;
+            }
+
+            .status h1 span {
+                color: var(--accent);
+            }
+
+            .live {
                 position: absolute;
-                width: 4px;
-                height: 4px;
-                background: rgba(255,255,255,0.8);
-                border-radius: 50%;
-                animation: particles 8s linear infinite;
+                bottom: 24px;
+                left: 28px;
+                right: 28px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                color: var(--green);
+                font-size: 13px;
+                letter-spacing: 3px;
             }
 
-            .gradient-text {
-                background: linear-gradient(45deg,#ff6b6b,#4ecdc4,#45b7d1,#96ceb4,#feca57);
-                background-size: 400% 400%;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                animation: gradientShift 4s ease infinite;
+            .live::before,
+            .live::after {
+                content: "";
+                flex: 1;
+                height: 1px;
+                background: rgba(60,255,127,0.3);
             }
-        </style>
-    </head>
-    <body class="relative min-h-screen bg-black flex items-center justify-center p-5 text-white font-sans overflow-hidden">
 
-        <!-- Particles -->
-        <div class="absolute inset-0 z-0">
-            ${Array.from({length:8}, (_, i) => `<div class="particle" style="left:${(i+1)*10}%; animation-delay:${i}s;"></div>`).join('')}
-        </div>
+            /* TIME CARD */
+            .time small {
+                color: var(--muted);
+            }
 
-        <!-- Main Content -->
-        <div class="relative z-10 max-w-6xl w-full text-center space-y-16">
-            
-            <div>
-                <!-- Header Section -->
-                <div class="bg-card/80 backdrop-blur-sm rounded-2xl border border-white/5 p-6 relative overflow-hidden animate-[slideUp_1s_ease-out] border border-white/20 pb-10">
-                    <div class="relative inline-block text-[80px] animate-bounce">🚀</div>
-                    <h1 class="text-6xl font-extrabold flex flex-col gap-2 drop-shadow-[0_0_30px_rgba(255,255,255,0.5)]">
-                        <span class="gradient-text">SERVER</span>
-                        <span class="gradient-text">ONLINE</span>
-                    </h1>
-                    <div class="flex items-center justify-center gap-4 text-lg font-semibold">
-                        <span class="flex items-center gap-2">
-                            <span class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></span>
-                            LIVE & ACTIVE
-                        </span>
-                    </div>
-                </div>
+            .time h2 {
+                margin-top: 30px;
+                font-size: 48px;
+                letter-spacing: 3px;
+            }
 
-                <!-- Greeting Card -->
-                <div class="bg-white/10 backdrop-blur-xl rounded-2xl p-10 border border-white/20 relative hover:-translate-y-1 transition-transform duration-300 animate-[slideUp_1s_ease-out_0.3s]">
-                    <p class="text-2xl font-medium mb-4">${greeting}</p>
-                    <div class="text-green-400 font-semibold text-lg">
-                        <span class="block opacity-80">Current Time</span>
-                        <span class="block text-2xl drop-shadow-lg">${date.toLocaleString()}</span>
-                    </div>
-                </div>
-            </div>
+            .time span {
+                color: var(--accent);
+                font-size: 18px;
+                margin-left: 6px;
+            }
 
-            <!-- Features Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 animate-[slideUp_1s_ease-out_0.6s]">
-                <div class="bg-white/10 backdrop-blur-lg rounded-xl p-8 border border-white/20 hover:-translate-y-2 transition-transform duration-300">
-                    <div class="text-4xl mb-3 animate-bounce">⚡</div>
-                    <h3 class="text-xl font-semibold mb-1">Lightning Fast</h3>
-                    <p class="opacity-90">Optimized for speed</p>
-                </div>
-                <div class="bg-white/10 backdrop-blur-lg rounded-xl p-8 border border-white/20 hover:-translate-y-2 transition-transform duration-300">
-                    <div class="text-4xl mb-3 animate-bounce">🔒</div>
-                    <h3 class="text-xl font-semibold mb-1">Secure</h3>
-                    <p class="opacity-90">Protected & encrypted</p>
-                </div>
-                <div class="bg-white/10 backdrop-blur-lg rounded-xl p-8 border border-white/20 hover:-translate-y-2 transition-transform duration-300">
-                    <div class="text-4xl mb-3 animate-bounce">🌐</div>
-                    <h3 class="text-xl font-semibold mb-1">Global</h3>
-                    <p class="opacity-90">Worldwide accessibility</p>
-                </div>
-                <div class="bg-white/10 backdrop-blur-lg rounded-xl p-8 border border-white/20 hover:-translate-y-2 transition-transform duration-300">
-                    <div class="text-4xl mb-3 animate-bounce">🎯</div>
-                    <h3 class="text-xl font-semibold mb-1">Precise</h3>
-                    <p class="opacity-90">Accurate responses</p>
-                </div>
-            </div>
+            .date {
+                margin-top: 10px;
+                color: var(--accent);
+                font-size: 14px;
+                letter-spacing: 1px;
+            }
 
-            <!-- Developer Section -->
-            <div class="bg-white/15 backdrop-blur-2xl rounded-2xl p-8 border-2 border-white/30 max-w-lg mx-auto hover:-translate-y-2 hover:scale-[1.02] transition-all duration-300 animate-[slideUp_1s_ease-out_0.9s]">
-                <div class="text-lg font-medium opacity-90 mb-2">Crafted with ❤️ by</div>
-                <div class="text-3xl font-bold gradient-text mb-2">Nadir Hossain</div>
-                <div class="inline-block bg-green-400/20 text-green-400 px-5 py-1 rounded-full font-semibold border border-green-400/30 animate-[pulse_2s_ease-in-out_infinite]">✨ Backend Developer</div>
-            </div>
+            /* FEATURES */
+            .features {
+                grid-column: 1 / -1;
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
 
-            <!-- Footer -->
-            <div class="text-xl font-medium animate-[slideUp_1s_ease-out_1.2s]">
-                <span class="animate-[pulse_1.5s_ease-in-out_infinite]">✨</span>
-                Ready to serve your requests with style!
-                <span class="animate-[pulse_1.5s_ease-in-out_infinite]">✨</span>
-            </div>
+            .feature {
+                text-align: center;
+            }
 
-        </div>
+            .feature h4 {
+                margin-top: 12px;
+                font-size: 15px;
+            }
+    
+            .feature h1 {
+                font-size: 45px;
+            }
 
-    </body>
-    </html>
+            .feature p {
+                margin-top: 4px;
+                color: var(--muted);
+                font-size: 13px;
+            }
+
+            /* POWERED BY */
+            .powered {
+                grid-column: 1 / 2;
+            }
+
+            .powered h4 {
+                color: var(--muted);
+                font-size: 12px;
+                letter-spacing: 2px;
+                margin-bottom: 16px;
+            }
+
+    .tech {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+    }
+
+    .tech div {
+      text-align: center;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* AUTHOR */
+    .author {
+      text-align: center;
+    }
+
+    .author p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .author h3 {
+      margin: 10px 0;
+      color: var(--accent);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(255,159,28,0.15);
+      border: 1px solid rgba(255,159,28,0.4);
+      color: var(--accent);
+      font-size: 12px;
+    }
+
+    /* FOOTER STRIP */
+    .footer {
+      grid-column: 1 / -1;
+      margin-top: 10px;
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 13px;
+      flex-wrap: wrap;
+    }
+
+    .footer span {
+      color: var(--accent);
+    }
+
+    @media (max-width: 900px) {
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+      .features {
+        grid-template-columns: 1fr 1fr;
+      }
+      .tech {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .dot {
+  width: 10px;
+  height: 10px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--green);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(0, 255, 0, 0);
+  }
+
+  100% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(0, 255, 0, 0);
+  }
+}
+
+
+
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+
+    
+
+    <!-- SERVER STATUS -->
+    <div class="card status">
+      <small>
+        <div class="dot"></div>
+        PRISMA SYSTEM STATUS
+      </small>
+
+      <h1>
+        🚀 <span>SERVER ONLINE</span><br>
+      </h1>
+
+      <div class="live">LIVE & ACTIVE</div>
+    </div>
+
+    <!-- TIME -->
+    <div class="card time">
+      <small>${greeting}</small>
+
+      <h2>
+        ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${ampm}<span>:${String(seconds).padStart(2, '0')}</span>
+      </h2>
+
+      <div class="date">
+        ${date.toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })}
+      </div>
+    </div>
+
+    <!-- FEATURES -->
+    <div class="features">
+      <div class="card feature">
+        <h1>⚡</h1>
+        <h4>Lightning Fast</h4>
+        <p>Optimized</p>
+      </div>
+
+      <div class="card feature">
+        <h1>🛡️</h1>
+        <h4>Secure</h4>
+        <p>Encrypted</p>
+      </div>
+
+      <div class="card feature">
+        <h1>🌍</h1>
+        <h4>Global</h4>
+        <p>Worldwide</p>
+      </div>
+
+      <div class="card feature">
+        <h1>🎯</h1>
+        <h4>Precise</h4>
+        <p>Accurate</p>
+      </div>
+    </div>
+
+    <!-- POWERED BY -->
+    <div class="card powered">
+      <h4>POWERED BY</h4>
+
+      <div class="tech">
+        <div>Node.js</div>
+        <div>Prisma</div>
+        <div>MySQL</div>
+        <div>TypeScript</div>
+        <div>Express</div>
+        <div>Docker</div>
+      </div>
+    </div>
+
+    <!-- AUTHOR -->
+    <div class="card author">
+      <h3>Nadir Hossain</h3>
+      <div class="badge">&lt;/&gt; Backend Developer</div>
+    </div>
+
+  </div>
+
+</body>
+</html>
+
     `;
 };

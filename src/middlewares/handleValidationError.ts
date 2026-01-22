@@ -15,7 +15,6 @@ const handleValidationError = (error: unknown) => {
 
     // Prisma Validation Error (invalid data type, missing field, etc.)
     else if (error instanceof Prisma.PrismaClientValidationError) {
-        console.log("Nadir", error.message);
         
         // Parse the message to extract only specific "Argument `field` is missing." errors
         const parsedErrors = parsePrismaValidationError(error.message);
